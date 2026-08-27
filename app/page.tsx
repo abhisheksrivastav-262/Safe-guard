@@ -70,51 +70,51 @@ export default function HomePage() {
       <HeroSlideshow />
 
       {/* Trust intro */}
-      <section className="py-16 lg:py-24 bg-white">
-        <div className="max-w-[1280px] mx-auto px-6 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <section className="py-10 sm:py-12 lg:py-24 bg-white">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-16 items-center">
           <div>
-            <div className="inline-flex items-center gap-2 text-[#C5A253] text-[11px] tracking-[0.20em] uppercase font-bold mb-4">
-              <span className="w-8 h-px bg-[#C5A253]" /> Trusted Integrated Partner
+            <div className="inline-flex items-center gap-2 text-[#C5A253] text-[10px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.20em] uppercase font-bold mb-3 sm:mb-4">
+              <span className="w-6 sm:w-8 h-px bg-[#C5A253]" /> Trusted Integrated Partner
             </div>
-            <h2 className="text-[#0A1931] font-black text-[34px] lg:text-[44px] leading-[0.95] tracking-[-0.02em]">
+            <h2 className="text-[#0A1931] font-black text-[28px] sm:text-[32px] lg:text-[44px] leading-[0.92] sm:leading-[0.95] tracking-[-0.02em]">
               A Safer, Smarter<br />
               <span className="italic font-light text-[#C5A253]">& Better Managed</span><br />
               Tomorrow.
             </h2>
-            <p className="text-slate-600 text-[15px] leading-relaxed mt-6">
+            <p className="text-slate-600 text-[14px] sm:text-[15px] leading-relaxed mt-4 sm:mt-6">
               SAFE Guard FORCE combines security, facility management, housekeeping, technical services, STP operations and investigation capabilities under one professional organization — delivering disciplined execution, accountable supervision and customized solutions for every premises.
             </p>
-            <p className="text-slate-500 text-sm leading-relaxed mt-4">
+            <p className="text-slate-500 text-[13px] sm:text-sm leading-relaxed mt-3 sm:mt-4">
               From residential societies and corporate towers to hospitals, hotels, factories and large events — we protect people, manage properties, maintain operations and ensure cleaner, healthier environments.
             </p>
-            <div className="grid grid-cols-3 gap-4 mt-8">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-6 sm:mt-8">
               {[
                 ["24/7", "Support"],
                 ["Pan-Mumbai", "Presence"],
                 ["One-Roof", "Solutions"],
               ].map(([a, b]) => (
-                <div key={a} className="border border-slate-200 px-4 py-4 text-center">
-                  <div className="text-[#0A1931] font-black text-sm">{a}</div>
-                  <div className="text-slate-500 text-xs tracking-widest uppercase font-semibold">{b}</div>
+                <div key={a} className="border border-slate-200 px-2 sm:px-4 py-3 sm:py-4 text-center">
+                  <div className="text-[#0A1931] font-black text-xs sm:text-sm">{a}</div>
+                  <div className="text-slate-500 text-[10px] sm:text-xs tracking-widest uppercase font-semibold">{b}</div>
                 </div>
               ))}
             </div>
-            <Link href="/about" className="inline-flex mt-8 border border-[#0A1931] text-[#0A1931] hover:bg-[#0A1931] hover:text-white px-7 py-3.5 text-xs tracking-[0.16em] uppercase font-bold transition">
+            <Link href="/about" className="inline-flex mt-6 sm:mt-8 border border-[#0A1931] text-[#0A1931] hover:bg-[#0A1931] hover:text-white active:bg-[#0A1931] active:text-white px-6 sm:px-7 py-3 sm:py-3.5 text-xs tracking-[0.16em] uppercase font-bold transition min-h-[44px] items-center touch-manipulation">
               Discover Our Approach
             </Link>
           </div>
           <div className="relative">
             <div className="relative overflow-hidden border border-slate-200">
-              <img src="/images/safeforce.jpeg" alt="SAFE Guard FORCE personnel in ceremonial uniform" className="w-full h-[520px] object-cover object-top" />
-              <div className="absolute top-4 left-4 bg-white p-1.5 shadow-lg">
-                <img src="/images/safelogo.jpeg" alt="Badge" className="w-14 h-14 object-contain" />
+              <img src="/images/safeforce.jpeg" alt="SAFE Guard FORCE personnel in ceremonial uniform" className="w-full h-[380px] sm:h-[440px] lg:h-[520px] object-cover object-top" />
+              <div className="absolute top-3 sm:top-4 left-3 sm:left-4 bg-white p-1 sm:p-1.5 shadow-lg">
+                <img src="/images/safelogo.jpeg" alt="Badge" className="w-10 h-10 sm:w-14 sm:h-14 object-contain" />
               </div>
-              <div className="absolute bottom-0 left-0 right-0 bg-[#0A1931] p-6 flex items-center justify-between">
-                <div>
-                  <div className="text-[#C5A253] text-xs tracking-widest uppercase font-bold">Trained & Verified Personnel</div>
-                  <div className="text-white text-sm mt-1">C 517, Kailash Esplanade, LBS Marg • Ghatkopar West</div>
+              <div className="absolute bottom-0 left-0 right-0 bg-[#0A1931] p-4 sm:p-6 flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <div className="text-[#C5A253] text-[10px] sm:text-xs tracking-widest uppercase font-bold">Trained & Verified Personnel</div>
+                  <div className="text-white text-xs sm:text-sm mt-1 leading-tight">C 517, Kailash Esplanade • Ghatkopar West</div>
                 </div>
-                <div className="w-10 h-10 border border-white/20 flex items-center justify-center text-white">→</div>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 border border-white/20 flex items-center justify-center text-white shrink-0">→</div>
               </div>
             </div>
             <div className="hidden lg:block absolute -bottom-6 -left-6 bg-white shadow-xl border border-slate-100 p-6 w-[260px]">
@@ -130,18 +130,18 @@ export default function HomePage() {
       </section>
 
       {/* Core Services */}
-      <section className="py-16 lg:py-20 bg-[#F8FAFC] border-t border-slate-100">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
+      <section className="py-10 sm:py-12 lg:py-20 bg-[#F8FAFC] border-t border-slate-100">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 sm:gap-6 mb-6 sm:mb-10">
             <div>
-              <div className="text-[#C5A253] text-[11px] tracking-[0.20em] uppercase font-bold mb-3">12 Integrated Capabilities</div>
-              <h2 className="text-[#0A1931] font-black text-[32px] lg:text-[42px] leading-none tracking-tight">Core Services</h2>
-              <p className="text-slate-500 text-sm mt-3 max-w-[560px]">One accountable partner for security, facility, hygiene, technical and investigation needs — customized to your environment.</p>
+              <div className="text-[#C5A253] text-[10px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.20em] uppercase font-bold mb-2 sm:mb-3">12 Integrated Capabilities</div>
+              <h2 className="text-[#0A1931] font-black text-[26px] sm:text-[30px] lg:text-[42px] leading-none tracking-tight">Core Services</h2>
+              <p className="text-slate-500 text-[13px] sm:text-sm mt-2 sm:mt-3 max-w-[560px]">One accountable partner for security, facility, hygiene, technical and investigation needs — customized to your environment.</p>
             </div>
-            <Link href="/security-services" className="hidden lg:inline-flex border border-slate-300 hover:border-[#0A1931] hover:bg-[#0A1931] hover:text-white text-[#0A1931] px-6 py-3 text-xs tracking-[0.16em] uppercase font-bold transition">View All Services</Link>
+            <Link href="/security-services" className="hidden lg:inline-flex border border-slate-300 hover:border-[#0A1931] hover:bg-[#0A1931] hover:text-white active:bg-[#0A1931] active:text-white text-[#0A1931] px-6 py-3 text-xs tracking-[0.16em] uppercase font-bold transition min-h-[44px] items-center touch-manipulation">View All Services</Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
             {services.map((s) => (
               <div key={s.title} className="group bg-white border border-slate-100 hover:border-[#C5A253]/30 hover:shadow-xl transition-all duration-300 overflow-hidden">
                 <div className="h-36 overflow-hidden relative">
@@ -165,14 +165,14 @@ export default function HomePage() {
       </section>
 
       {/* Why Choose */}
-      <section className="py-16 lg:py-20 bg-[#0A1931] relative overflow-hidden">
+      <section className="py-10 sm:py-12 lg:py-20 bg-[#0A1931] relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80)", backgroundSize: "cover" }} />
-        <div className="relative max-w-[1280px] mx-auto px-6">
-          <div className="max-w-[640px] mb-10">
-            <div className="text-[#C5A253] text-[11px] tracking-[0.20em] uppercase font-bold mb-3">Why Organizations Trust Us</div>
-            <h2 className="text-white font-black text-[32px] lg:text-[42px] leading-none tracking-tight">Why Organizations Trust <span className="text-[#C5A253] italic font-light">SAFE Guard FORCE</span></h2>
+        <div className="relative max-w-[1280px] mx-auto px-4 sm:px-6">
+          <div className="max-w-[640px] mb-6 sm:mb-10">
+            <div className="text-[#C5A253] text-[10px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.20em] uppercase font-bold mb-2 sm:mb-3">Why Organizations Trust Us</div>
+            <h2 className="text-white font-black text-[24px] sm:text-[30px] lg:text-[42px] leading-none tracking-tight">Why Organizations Trust <span className="text-[#C5A253] italic font-light">SAFE Guard FORCE</span></h2>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {whyChoose.map((f, i) => (
               <div key={f.title} className="bg-white/[0.06] backdrop-blur border border-white/10 p-7 hover:bg-white/[0.09] hover:border-[#C5A253]/30 transition">
                 <div className="w-10 h-10 bg-[#C5A253] flex items-center justify-center text-[#0A1931] font-black text-sm mb-5">0{i + 1}</div>
@@ -185,18 +185,18 @@ export default function HomePage() {
       </section>
 
       {/* How We Work */}
-      <section className="py-16 lg:py-20 bg-white">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <div className="text-center max-w-[640px] mx-auto mb-12">
-            <div className="text-[#C5A253] text-[11px] tracking-[0.20em] uppercase font-bold mb-3">Our Process</div>
-            <h2 className="text-[#0A1931] font-black text-[32px] lg:text-[42px] leading-none tracking-tight">How We Work</h2>
-            <p className="text-slate-500 text-sm mt-3">Disciplined, transparent and operationally accountable — from assessment to continuous improvement.</p>
+      <section className="py-10 sm:py-12 lg:py-20 bg-white">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
+          <div className="text-center max-w-[640px] mx-auto mb-8 sm:mb-12">
+            <div className="text-[#C5A253] text-[10px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.20em] uppercase font-bold mb-2 sm:mb-3">Our Process</div>
+            <h2 className="text-[#0A1931] font-black text-[26px] sm:text-[30px] lg:text-[42px] leading-none tracking-tight">How We Work</h2>
+            <p className="text-slate-500 text-[13px] sm:text-sm mt-2 sm:mt-3">Disciplined, transparent and operationally accountable — from assessment to continuous improvement.</p>
           </div>
 
           <div className="relative">
             {/* line desktop */}
             <div className="hidden lg:block absolute top-[34px] left-[5%] right-[5%] h-px bg-slate-200" />
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6">
               {[
                 { n: "01", t: "Understand", d: "Understand property, risks and operational requirements." },
                 { n: "02", t: "Assess", d: "Conduct site assessment and identify service requirements." },
@@ -219,26 +219,26 @@ export default function HomePage() {
       </section>
 
       {/* Industries */}
-      <section className="py-16 lg:py-20 bg-[#F8FAFC] border-y border-slate-100">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-10">
+      <section className="py-10 sm:py-12 lg:py-20 bg-[#F8FAFC] border-y border-slate-100">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-3 sm:gap-4 mb-6 sm:mb-10">
             <div>
-              <div className="text-[#C5A253] text-[11px] tracking-[0.20em] uppercase font-bold mb-3">Where We Serve</div>
-              <h2 className="text-[#0A1931] font-black text-[32px] lg:text-[42px] leading-none tracking-tight">Industries We Serve</h2>
+              <div className="text-[#C5A253] text-[10px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.20em] uppercase font-bold mb-2 sm:mb-3">Where We Serve</div>
+              <h2 className="text-[#0A1931] font-black text-[26px] sm:text-[30px] lg:text-[42px] leading-none tracking-tight">Industries We Serve</h2>
             </div>
-            <Link href="/industries" className="text-[#0A1931] text-xs tracking-[0.16em] uppercase font-bold border-b-2 border-[#C5A253] pb-1 self-start lg:self-auto">Explore All Industries →</Link>
+            <Link href="/industries" className="text-[#0A1931] text-xs tracking-[0.16em] uppercase font-bold border-b-2 border-[#C5A253] pb-1 self-start lg:self-auto min-h-[32px] flex items-center touch-manipulation">Explore All Industries →</Link>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
             {industries.map((ind) => (
-              <Link key={ind.name} href="/industries" className="group relative h-[180px] lg:h-[200px] overflow-hidden bg-[#0A1931]">
-                <img src={ind.img} alt={ind.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-700 opacity-90" />
+              <Link key={ind.name} href="/industries" className="group relative h-[148px] sm:h-[160px] lg:h-[200px] overflow-hidden bg-[#0A1931] touch-manipulation">
+                <img src={ind.img} alt={ind.name} className="w-full h-full object-cover group-hover:scale-105 group-active:scale-105 transition duration-700 opacity-90" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#070F1F] via-[#070F1F]/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <div className="text-white font-bold text-sm leading-tight">{ind.name}</div>
-                  <div className="text-[#C5A253] text-[10px] tracking-widest uppercase font-bold mt-1 opacity-0 group-hover:opacity-100 transition">View Solutions →</div>
+                <div className="absolute bottom-0 left-0 right-0 p-2.5 sm:p-4">
+                  <div className="text-white font-bold text-xs sm:text-sm leading-tight">{ind.name}</div>
+                  <div className="text-[#C5A253] text-[9px] sm:text-[10px] tracking-widest uppercase font-bold mt-1 opacity-0 group-hover:opacity-100 transition hidden sm:block">View Solutions →</div>
                 </div>
-                <div className="absolute top-3 right-3 w-7 h-7 border border-white/30 flex items-center justify-center text-white/70 group-hover:bg-[#C5A253] group-hover:text-[#0A1931] group-hover:border-[#C5A253] transition text-xs">↗</div>
+                <div className="absolute top-2 sm:top-3 right-2 sm:right-3 w-6 h-6 sm:w-7 sm:h-7 border border-white/30 flex items-center justify-center text-white/70 group-hover:bg-[#C5A253] group-hover:text-[#0A1931] group-hover:border-[#C5A253] transition text-[10px] sm:text-xs">↗</div>
               </Link>
             ))}
           </div>
@@ -246,11 +246,11 @@ export default function HomePage() {
       </section>
 
       {/* Our Personnel - Real Team */}
-      <section className="py-16 bg-white">
-        <div className="max-w-[1280px] mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
-          <div className="relative">
-            <img src="/images/safeforce.jpeg" alt="SAFE Guard FORCE guard" className="w-full h-[520px] object-cover object-top border border-slate-200" />
-            <div className="absolute -bottom-5 -right-5 hidden lg:flex bg-[#0A1931] border-2 border-white shadow-xl p-5 items-center gap-4">
+      <section className="py-10 sm:py-12 lg:py-16 bg-white">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
+          <div className="relative order-2 lg:order-1">
+            <img src="/images/safeforce.jpeg" alt="SAFE Guard FORCE guard" className="w-full h-[380px] sm:h-[440px] lg:h-[520px] object-cover object-top border border-slate-200" />
+            <div className="absolute -bottom-4 -right-4 hidden lg:flex bg-[#0A1931] border-2 border-white shadow-xl p-5 items-center gap-4">
               <img src="/images/safelogo.jpeg" alt="Logo" className="w-16 h-16 bg-white p-1 object-contain" />
               <div>
                 <div className="text-[#C5A253] text-xs tracking-[0.18em] uppercase font-bold">Your Security.</div>
@@ -258,34 +258,42 @@ export default function HomePage() {
                 <div className="text-white/60 text-xs mt-1">Disciplined • Verified • Presentable</div>
               </div>
             </div>
+            {/* Mobile badge */}
+            <div className="flex lg:hidden bg-[#0A1931] p-3 items-center gap-3 mt-0 border-t-0 border border-slate-200 border-t-0">
+              <img src="/images/safelogo.jpeg" alt="Logo" className="w-10 h-10 bg-white p-1 object-contain shrink-0" />
+              <div>
+                <div className="text-[#C5A253] text-[10px] tracking-[0.16em] uppercase font-bold">Your Security. Our Priority.</div>
+                <div className="text-white/70 text-xs">Disciplined • Verified • Presentable</div>
+              </div>
+            </div>
           </div>
-          <div>
-            <div className="text-[#C5A253] text-[11px] tracking-[0.20em] uppercase font-bold mb-3">Our Personnel</div>
-            <h2 className="text-[#0A1931] font-black text-[30px] lg:text-[38px] leading-none tracking-tight">
+          <div className="order-1 lg:order-2">
+            <div className="text-[#C5A253] text-[10px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.20em] uppercase font-bold mb-2 sm:mb-3">Our Personnel</div>
+            <h2 className="text-[#0A1931] font-black text-[24px] sm:text-[28px] lg:text-[38px] leading-none tracking-tight">
               Disciplined Personnel.<br />
               <span className="italic font-light text-[#C5A253]">Professional Appearance.</span>
             </h2>
-            <p className="text-slate-600 leading-relaxed mt-5">
+            <p className="text-slate-600 text-[13px] sm:text-[15px] leading-relaxed mt-4 sm:mt-5">
               Every SAFE Guard FORCE guard is screened, trained and kitted for the premises they protect — from ceremonial bearing to operational vigilance. White gloves, beret with insignia, SAFE-branded belt and disciplined posture reflect the standards we enforce daily.
             </p>
-            <ul className="mt-6 space-y-3">
+            <ul className="mt-5 sm:mt-6 space-y-2.5 sm:space-y-3">
               {[
                 "Uniform discipline & grooming checks",
                 "Verified antecedents & supervised deployment",
                 "Ceremonial and operational readiness",
                 "Client-facing courtesy with firm access control",
               ].map((t) => (
-                <li key={t} className="flex gap-3 text-sm text-slate-700">
-                  <span className="w-6 h-6 rounded-full bg-[#C5A253] text-[#0A1931] flex items-center justify-center text-xs font-bold shrink-0">✓</span>
-                  {t}
+                <li key={t} className="flex gap-2.5 sm:gap-3 text-[13px] sm:text-sm text-slate-700">
+                  <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[#C5A253] text-[#0A1931] flex items-center justify-center text-[10px] sm:text-xs font-bold shrink-0">✓</span>
+                  <span className="pt-0.5 sm:pt-1">{t}</span>
                 </li>
               ))}
             </ul>
-            <div className="flex gap-3 mt-8">
-              <Link href="/security-services" className="bg-[#0A1931] text-white px-6 py-3.5 text-xs tracking-[0.16em] uppercase font-bold">
+            <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 mt-6 sm:mt-8">
+              <Link href="/security-services" className="bg-[#0A1931] text-white px-6 py-3.5 text-xs tracking-[0.16em] uppercase font-bold min-h-[44px] flex items-center justify-center touch-manipulation active:bg-[#132D4F]">
                 View Security Services
               </Link>
-              <Link href="/contact" className="border border-slate-300 px-6 py-3.5 text-xs tracking-[0.16em] uppercase font-bold text-[#0A1931]">
+              <Link href="/contact" className="border border-slate-300 px-6 py-3.5 text-xs tracking-[0.16em] uppercase font-bold text-[#0A1931] min-h-[44px] flex items-center justify-center touch-manipulation active:bg-slate-50">
                 Request Deployment
               </Link>
             </div>
@@ -293,41 +301,41 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="bg-[#070F1F] py-12 lg:py-16 border-t border-white/10">
-        <div className="max-w-[1280px] mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-8 divide-x divide-white/10">
+      {/* Stats - mobile grid 2 with borders not divide-x */}
+      <section className="bg-[#070F1F] py-8 sm:py-10 lg:py-16 border-t border-white/10">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 grid grid-cols-2 lg:grid-cols-4 gap-0 divide-y lg:divide-y-0 divide-white/10 lg:divide-x border border-white/10 lg:border-0">
           {[
             ["24/7", "Professional Assistance"],
             ["12+", "Integrated Service Categories"],
             ["100%", "Customized Service Approach"],
             ["360°", "Security & Facility Solutions"],
           ].map(([a, b]) => (
-            <div key={a} className="px-6 text-center lg:text-left first:pl-0">
-              <div className="text-[#C5A253] font-black text-[36px] lg:text-[44px] leading-none tracking-tighter">{a}</div>
-              <div className="text-white/60 text-xs tracking-[0.16em] uppercase font-semibold mt-2">{b}</div>
+            <div key={a} className="px-4 sm:px-6 py-6 sm:py-0 text-center lg:text-left border-r border-white/10 even:border-r-0 lg:even:border-r lg:border-r-0 lg:first:pl-0 odd:border-r sm:border-r-0">
+              <div className="text-[#C5A253] font-black text-[28px] sm:text-[32px] lg:text-[44px] leading-none tracking-tighter">{a}</div>
+              <div className="text-white/60 text-[10px] sm:text-xs tracking-[0.14em] sm:tracking-[0.16em] uppercase font-semibold mt-2 leading-tight">{b}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* Final CTA */}
-      <section className="relative h-[420px] lg:h-[480px] overflow-hidden bg-[#070F1F]">
+      <section className="relative min-h-[420px] sm:h-[420px] lg:h-[480px] overflow-hidden bg-[#070F1F] py-10 sm:py-0">
         <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80" alt="Corporate building night" className="absolute inset-0 w-full h-full object-cover opacity-60" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#070F1F] via-[#070F1F]/75 to-[#070F1F]/40" />
-        <div className="relative z-10 h-full max-w-[1280px] mx-auto px-6 flex flex-col justify-center">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#070F1F] via-[#070F1F]/80 sm:via-[#070F1F]/75 to-[#070F1F]/60 sm:to-[#070F1F]/40" />
+        <div className="relative z-10 h-full min-h-[420px] sm:min-h-0 max-w-[1280px] mx-auto px-4 sm:px-6 flex flex-col justify-center py-8 sm:py-0">
           <div className="max-w-[640px]">
-            <h2 className="text-white font-black text-[32px] lg:text-[44px] leading-[0.95] tracking-tight">
+            <h2 className="text-white font-black text-[26px] sm:text-[30px] lg:text-[44px] leading-[0.92] sm:leading-[0.95] tracking-tight">
               Your Property Deserves<br />
               <span className="text-[#C5A253] italic font-light">More Than Basic Security.</span>
             </h2>
-            <p className="text-white/70 text-sm leading-relaxed mt-4 max-w-[520px]">
+            <p className="text-white/75 sm:text-white/70 text-[13px] sm:text-sm leading-relaxed mt-3 sm:mt-4 max-w-[520px]">
               Partner with SAFE Guard FORCE for professional security, facility management, technical maintenance, STP operations and confidential investigation solutions.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 mt-8">
-              <Link href="/contact" className="inline-flex items-center justify-center gap-2 bg-[#C5A253] hover:bg-[#D4AF37] text-[#070F1F] px-8 py-4 text-xs tracking-[0.16em] uppercase font-bold transition">
+            <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 mt-6 sm:mt-8">
+              <Link href="/contact" className="inline-flex items-center justify-center gap-2 bg-[#C5A253] hover:bg-[#D4AF37] active:bg-[#B8941F] text-[#070F1F] px-6 sm:px-8 py-3.5 sm:py-4 text-xs tracking-[0.16em] uppercase font-bold transition min-h-[48px] touch-manipulation">
                 Request a Consultation →
               </Link>
-              <a href="tel:9323581437" className="inline-flex items-center justify-center border border-white/30 hover:bg-white hover:text-[#070F1F] text-white px-8 py-4 text-xs tracking-[0.16em] uppercase font-bold transition">
+              <a href="tel:9323581437" className="inline-flex items-center justify-center border border-white/30 hover:bg-white hover:text-[#070F1F] active:bg-white active:text-[#070F1F] text-white px-6 sm:px-8 py-3.5 sm:py-4 text-xs tracking-[0.16em] uppercase font-bold transition min-h-[48px] touch-manipulation">
                 Call Now — 9323581437
               </a>
             </div>

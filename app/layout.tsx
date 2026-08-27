@@ -47,7 +47,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${manrope.variable} ${inter.variable} scroll-smooth`}>
-      <body className="min-h-screen flex flex-col bg-white antialiased pb-[56px] lg:pb-0">
+      <body className="min-h-screen flex flex-col bg-white antialiased pb-[60px] lg:pb-0">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
