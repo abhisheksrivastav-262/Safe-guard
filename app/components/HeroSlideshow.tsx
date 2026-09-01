@@ -1,8 +1,10 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import { getHeroSlides } from "@/lib/cms";
+import type { HeroSlide } from "@/lib/types";
 
-const slides = [
+const defaultSlides = [
   {
     image: "/images/safeforce.jpeg",
     alt: "SAFE Guard FORCE trained security personnel",
@@ -26,15 +28,37 @@ const slides = [
 ];
 
 export default function HeroSlideshow() {
+  const [slides, setSlides] = useState<any[]>(defaultSlides);
+  const [dynamicSlide, setDynamicSlide] = useState<HeroSlide | null>(null);
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
-    if (paused) return;
-    const t = setInterval(() => setIndex((i) => (i + 1) % slides.length), 3000);
+    getHeroSlides().then((res) => {
+      if (res && res.length > 0) {
+        setSlides(res.map((s) => ({
+          image: s.image_url,
+          alt: s.image_alt || s.title,
+          data: s,
+        })));
+        setDynamicSlide(res[0]);
+      }
+    }).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (slides[index]?.data) {
+      setDynamicSlide(slides[index].data);
+    }
+  }, [index, slides]);
+
+  useEffect(() => {
+    if (paused || slides.length <= 1) return;
+    const duration = dynamicSlide?.duration_ms || 3500;
+    const t = setInterval(() => setIndex((i) => (i + 1) % slides.length), duration);
     return () => clearInterval(t);
-  }, [paused]);
+  }, [paused, slides.length, dynamicSlide]);
 
   const onTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -83,28 +107,49 @@ export default function HeroSlideshow() {
         <div className="max-w-[720px]">
           <div className="inline-flex items-center gap-2 sm:gap-3 mb-3 sm:mb-5">
             <span className="w-6 sm:w-8 h-px bg-[#C5A253]" />
-            <span className="text-[#C5A253] text-[10px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.24em] uppercase font-bold">Integrated Security & Facility Solutions</span>
+            <span className="text-[#C5A253] text-[10px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.24em] uppercase font-bold">
+              {dynamicSlide?.eyebrow || "Integrated Security & Facility Solutions"}
+            </span>
           </div>
 
           <h1 className="text-white font-black leading-[0.90] tracking-[-0.03em] text-[30px] sm:text-[38px] lg:text-[64px]">
-            SECURITY
-            <span className="block font-light italic text-[#C5A253]">THAT PROTECTS.</span>
-            <span className="block">SERVICES</span>
-            <span className="block font-light italic text-[#C5A253]">THAT PERFORM.</span>
+            {dynamicSlide?.title ? (
+              <>
+                {dynamicSlide.title}
+                {dynamicSlide.highlighted_title && (
+                  <span className="block font-light italic text-[#C5A253]">
+                    {dynamicSlide.highlighted_title}
+                  </span>
+                )}
+              </>
+            ) : (
+              <>
+                SECURITY
+                <span className="block font-light italic text-[#C5A253]">THAT PROTECTS.</span>
+                <span className="block">SERVICES</span>
+                <span className="block font-light italic text-[#C5A253]">THAT PERFORM.</span>
+              </>
+            )}
           </h1>
 
           <p className="text-white/80 sm:text-white/75 text-[13.5px] sm:text-[15px] lg:text-[17px] leading-relaxed mt-4 sm:mt-6 max-w-[560px] pr-2 sm:pr-0">
-            Professional security, facility management, technical maintenance, STP operations and confidential investigation solutions designed for safer, cleaner and efficiently managed premises.
+            {dynamicSlide?.subtitle || "Professional security, facility management, technical maintenance, STP operations and confidential investigation solutions designed for safer, cleaner and efficiently managed premises."}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 mt-6 sm:mt-8">
-            <Link href="/contact" className="inline-flex items-center justify-center gap-2 bg-[#C5A253] hover:bg-[#D4AF37] active:bg-[#B8941F] text-[#070F1F] px-6 sm:px-8 py-3.5 sm:py-4 text-[11px] sm:text-xs tracking-[0.14em] sm:tracking-[0.16em] uppercase font-bold transition min-h-[48px] touch-manipulation">
-              Get a Free Consultation
+            <Link
+              href={dynamicSlide?.primary_cta_url || "/contact"}
+              className="inline-flex items-center justify-center gap-2 bg-[#C5A253] hover:bg-[#D4AF37] active:bg-[#B8941F] text-[#070F1F] px-6 sm:px-8 py-3.5 sm:py-4 text-[11px] sm:text-xs tracking-[0.14em] sm:tracking-[0.16em] uppercase font-bold transition min-h-[48px] touch-manipulation"
+            >
+              {dynamicSlide?.primary_cta_text || "Get a Free Consultation"}
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </Link>
-            <a href="tel:9323581437" className="inline-flex items-center justify-center gap-2 border border-white/40 sm:border-white/30 hover:bg-white hover:text-[#070F1F] active:bg-white active:text-[#070F1F] text-white px-6 sm:px-8 py-3.5 sm:py-4 text-[11px] sm:text-xs tracking-[0.14em] sm:tracking-[0.16em] uppercase font-bold transition min-h-[48px] touch-manipulation">
+            <a
+              href={dynamicSlide?.secondary_cta_url || "tel:9323581437"}
+              className="inline-flex items-center justify-center gap-2 border border-white/40 sm:border-white/30 hover:bg-white hover:text-[#070F1F] active:bg-white active:text-[#070F1F] text-white px-6 sm:px-8 py-3.5 sm:py-4 text-[11px] sm:text-xs tracking-[0.14em] sm:tracking-[0.16em] uppercase font-bold transition min-h-[48px] touch-manipulation"
+            >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              Call 9323581437
+              {dynamicSlide?.secondary_cta_text || "Call 9323581437"}
             </a>
           </div>
 

@@ -1,25 +1,12 @@
 import Link from "next/link";
 import HeroSlideshow from "../components/HeroSlideshow";
+import { getServicesServer, getIndustriesServer, getSiteSettingsServer } from "@/lib/cms-server";
+import { createClient } from "@/lib/supabase/server";
 
 export const metadata = {
   title: "SAFE Guard FORCE | Integrated Security & Facility Management Mumbai",
   description: "Integrated security, facility management, housekeeping, technical maintenance, STP operations & investigation solutions for residential, commercial and institutional environments. Mumbai • Nationwide Capability.",
 };
-
-const services = [
-  { title: "Security Services", desc: "Trained & verified guards, supervisors, officers, bouncers, access control and patrolling.", icon: "shield", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" },
-  { title: "Facility Management", desc: "Society & facility managers, supervisors, inspections and vendor coordination.", icon: "building", img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80" },
-  { title: "Housekeeping", desc: "Cleaning, sanitization, waste management and hygiene maintenance.", icon: "sparkles", img: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&q=80" },
-  { title: "Gardening & Landscaping", desc: "Lawn, garden, irrigation, pruning and landscape maintenance.", icon: "leaf", img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80" },
-  { title: "Fire & Safety", desc: "Fire marshals, inspections, evacuation planning and safety training.", icon: "flame", img: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=600&q=80" },
-  { title: "Dog Squad", desc: "Trained sniffer dogs & handlers for patrol and detection.", icon: "paw", img: "https://images.unsplash.com/photo-1551033406-611cf9a28f67?w=600&q=80" },
-  { title: "Event Security", desc: "Crowd control, VIP protection and venue entry management.", icon: "users", img: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=600&q=80" },
-  { title: "Technical Maintenance", desc: "Electrical, plumbing, HVAC, civil and infrastructure support.", icon: "wrench", img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=80" },
-  { title: "Pest Control", desc: "Mosquito, termite, cockroach and rodent management.", icon: "bug", img: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&q=80" },
-  { title: "Reception & Helpdesk", desc: "Receptionists, helpdesk, pantry and office support staff.", icon: "headset", img: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80" },
-  { title: "Detective Services", desc: "Confidential investigations, verification and surveillance.", icon: "search", img: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80" },
-  { title: "STP Operations", desc: "Sewage treatment plant operation, maintenance & compliance.", icon: "droplet", img: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=600&q=80" },
-];
 
 const whyChoose = [
   { title: "Trained & Verified Personnel", desc: "Screened, trained and supervised manpower aligned to your premises and risks." },
@@ -28,21 +15,6 @@ const whyChoose = [
   { title: "Regular Site Inspections", desc: "Quality checks, audits and continuous improvement cycles." },
   { title: "Customized Packages", desc: "Solutions tailored to property type, occupancy and operational needs." },
   { title: "Integrated Under One Roof", desc: "Security, facility, technical, STP and investigation — one accountable partner." },
-];
-
-const industries = [
-  { name: "Residential Societies", img: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80" },
-  { name: "Corporate Offices", img: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80" },
-  { name: "Commercial Complexes", img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80" },
-  { name: "Malls", img: "https://images.unsplash.com/photo-1519566335946-e6f65f0f84ad?w=600&q=80" },
-  { name: "Hospitals", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=600&q=80" },
-  { name: "Hotels", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80" },
-  { name: "Schools", img: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80" },
-  { name: "Factories", img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=80" },
-  { name: "Warehouses", img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&q=80" },
-  { name: "Construction Sites", img: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80" },
-  { name: "Events", img: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=600&q=80" },
-  { name: "Institutions", img: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&q=80" },
 ];
 
 function Icon({ name }: { name: string }) {
@@ -61,10 +33,24 @@ function Icon({ name }: { name: string }) {
     search: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/><path d="M8 11h6"/></svg>,
     droplet: <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7"><path d="M12 2l7 7c0 5-3.5 9-7 11-3.5-2-7-6-7-11l7-7z"/><path d="M9 14a3 3 0 1 0 6 0"/></svg>,
   };
-  return map[name] || null;
+  return map[name] || map["shield"];
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [services, industries, settings] = await Promise.all([
+    getServicesServer(true),
+    getIndustriesServer(true),
+    getSiteSettingsServer(),
+  ]);
+
+  const supabase = await createClient();
+  const { data: sections } = await supabase.from("homepage_sections").select("*");
+  const trustSection = sections?.find((s) => s.section_key === "trust_intro");
+  const personnelSection = sections?.find((s) => s.section_key === "personnel");
+  const ctaSection = sections?.find((s) => s.section_key === "final_cta");
+
+  const primaryPhone = settings?.primary_phone || "9323581437";
+
   return (
     <>
       <HeroSlideshow />
@@ -74,15 +60,29 @@ export default function HomePage() {
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-16 items-center">
           <div>
             <div className="inline-flex items-center gap-2 text-[#C5A253] text-[10px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.20em] uppercase font-bold mb-3 sm:mb-4">
-              <span className="w-6 sm:w-8 h-px bg-[#C5A253]" /> Trusted Integrated Partner
+              <span className="w-6 sm:w-8 h-px bg-[#C5A253]" /> {trustSection?.eyebrow || "Trusted Integrated Partner"}
             </div>
             <h2 className="text-[#0A1931] font-black text-[28px] sm:text-[32px] lg:text-[44px] leading-[0.92] sm:leading-[0.95] tracking-[-0.02em]">
-              A Safer, Smarter<br />
-              <span className="italic font-light text-[#C5A253]">& Better Managed</span><br />
-              Tomorrow.
+              {trustSection?.title ? (
+                <>
+                  {trustSection.title}
+                  {trustSection.subtitle && (
+                    <>
+                      <br />
+                      <span className="italic font-light text-[#C5A253]">{trustSection.subtitle}</span>
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  A Safer, Smarter<br />
+                  <span className="italic font-light text-[#C5A253]">& Better Managed</span><br />
+                  Tomorrow.
+                </>
+              )}
             </h2>
             <p className="text-slate-600 text-[14px] sm:text-[15px] leading-relaxed mt-4 sm:mt-6">
-              SAFE Guard FORCE combines security, facility management, housekeeping, technical services, STP operations and investigation capabilities under one professional organization — delivering disciplined execution, accountable supervision and customized solutions for every premises.
+              {trustSection?.description || "SAFE Guard FORCE combines security, facility management, housekeeping, technical services, STP operations and investigation capabilities under one professional organization — delivering disciplined execution, accountable supervision and customized solutions for every premises."}
             </p>
             <p className="text-slate-500 text-[13px] sm:text-sm leading-relaxed mt-3 sm:mt-4">
               From residential societies and corporate towers to hospitals, hotels, factories and large events — we protect people, manage properties, maintain operations and ensure cleaner, healthier environments.
@@ -99,20 +99,20 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
-            <Link href="/about" className="inline-flex mt-6 sm:mt-8 border border-[#0A1931] text-[#0A1931] hover:bg-[#0A1931] hover:text-white active:bg-[#0A1931] active:text-white px-6 sm:px-7 py-3 sm:py-3.5 text-xs tracking-[0.16em] uppercase font-bold transition min-h-[44px] items-center touch-manipulation">
-              Discover Our Approach
+            <Link href={trustSection?.button_url || "/about"} className="inline-flex mt-6 sm:mt-8 border border-[#0A1931] text-[#0A1931] hover:bg-[#0A1931] hover:text-white active:bg-[#0A1931] active:text-white px-6 sm:px-7 py-3 sm:py-3.5 text-xs tracking-[0.16em] uppercase font-bold transition min-h-[44px] items-center touch-manipulation">
+              {trustSection?.button_text || "Discover Our Approach"}
             </Link>
           </div>
           <div className="relative">
             <div className="relative overflow-hidden border border-slate-200">
-              <img src="/images/safeforce.jpeg" alt="SAFE Guard FORCE personnel in ceremonial uniform" className="w-full h-[380px] sm:h-[440px] lg:h-[520px] object-cover object-top" />
+              <img src={trustSection?.image_url || "/images/safeforce.jpeg"} alt="SAFE Guard FORCE personnel in ceremonial uniform" className="w-full h-[380px] sm:h-[440px] lg:h-[520px] object-cover object-top" />
               <div className="absolute top-3 sm:top-4 left-3 sm:left-4 bg-white p-1 sm:p-1.5 shadow-lg">
                 <img src="/images/safelogo.jpeg" alt="Badge" className="w-10 h-10 sm:w-14 sm:h-14 object-contain" />
               </div>
               <div className="absolute bottom-0 left-0 right-0 bg-[#0A1931] p-4 sm:p-6 flex items-center justify-between gap-2">
                 <div className="min-w-0">
                   <div className="text-[#C5A253] text-[10px] sm:text-xs tracking-widest uppercase font-bold">Trained & Verified Personnel</div>
-                  <div className="text-white text-xs sm:text-sm mt-1 leading-tight">C 517, Kailash Esplanade • Ghatkopar West</div>
+                  <div className="text-white text-xs sm:text-sm mt-1 leading-tight">{settings?.address || "C 517, Kailash Esplanade • Ghatkopar West"}</div>
                 </div>
                 <div className="w-8 h-8 sm:w-10 sm:h-10 border border-white/20 flex items-center justify-center text-white shrink-0">→</div>
               </div>
@@ -134,7 +134,7 @@ export default function HomePage() {
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 sm:gap-6 mb-6 sm:mb-10">
             <div>
-              <div className="text-[#C5A253] text-[10px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.20em] uppercase font-bold mb-2 sm:mb-3">12 Integrated Capabilities</div>
+              <div className="text-[#C5A253] text-[10px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.20em] uppercase font-bold mb-2 sm:mb-3">Integrated Capabilities</div>
               <h2 className="text-[#0A1931] font-black text-[26px] sm:text-[30px] lg:text-[42px] leading-none tracking-tight">Core Services</h2>
               <p className="text-slate-500 text-[13px] sm:text-sm mt-2 sm:mt-3 max-w-[560px]">One accountable partner for security, facility, hygiene, technical and investigation needs — customized to your environment.</p>
             </div>
@@ -142,24 +142,35 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
-            {services.map((s) => (
-              <div key={s.title} className="group bg-white border border-slate-100 hover:border-[#C5A253]/30 hover:shadow-xl transition-all duration-300 overflow-hidden">
-                <div className="h-36 overflow-hidden relative">
-                  <img src={s.img} alt={s.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A1931]/60 to-transparent" />
-                  <div className="absolute top-3 left-3 w-9 h-9 bg-white/95 backdrop-blur flex items-center justify-center text-[#0A1931] group-hover:bg-[#C5A253] group-hover:text-white transition">
-                    <Icon name={s.icon} />
+            {services.map((s: any) => {
+              const title = s.name || s.title;
+              const desc = s.short_description || s.desc;
+              const img = s.card_image_url || s.hero_image_url || s.img || "/images/safeforce.jpeg";
+              const targetUrl = s.slug === "facility-management" ? "/facility-management" :
+                s.slug === "housekeeping" ? "/housekeeping" :
+                s.slug === "fire-safety" ? "/fire-safety" :
+                s.slug === "technical-maintenance" ? "/technical-maintenance" :
+                s.slug === "detective-services" ? "/detective-services" : "/security-services";
+
+              return (
+                <Link key={title} href={targetUrl} className="group bg-white border border-slate-100 hover:border-[#C5A253]/30 hover:shadow-xl transition-all duration-300 overflow-hidden block">
+                  <div className="h-36 overflow-hidden relative">
+                    <img src={img} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0A1931]/60 to-transparent" />
+                    <div className="absolute top-3 left-3 w-9 h-9 bg-white/95 backdrop-blur flex items-center justify-center text-[#0A1931] group-hover:bg-[#C5A253] group-hover:text-white transition">
+                      <Icon name={s.icon || "shield"} />
+                    </div>
                   </div>
-                </div>
-                <div className="p-5">
-                  <h3 className="text-[#0A1931] font-bold text-[13px] tracking-[0.04em] uppercase">{s.title}</h3>
-                  <p className="text-slate-500 text-[13px] leading-relaxed mt-2 line-clamp-3">{s.desc}</p>
-                  <div className="mt-4 flex items-center gap-2 text-[#C5A253] text-[11px] tracking-[0.14em] uppercase font-bold">
-                    Learn More <span className="group-hover:translate-x-1 transition">→</span>
+                  <div className="p-5">
+                    <h3 className="text-[#0A1931] font-bold text-[13px] tracking-[0.04em] uppercase">{title}</h3>
+                    <p className="text-slate-500 text-[13px] leading-relaxed mt-2 line-clamp-3">{desc}</p>
+                    <div className="mt-4 flex items-center gap-2 text-[#C5A253] text-[11px] tracking-[0.14em] uppercase font-bold">
+                      Learn More <span className="group-hover:translate-x-1 transition">→</span>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -194,7 +205,6 @@ export default function HomePage() {
           </div>
 
           <div className="relative">
-            {/* line desktop */}
             <div className="hidden lg:block absolute top-[34px] left-[5%] right-[5%] h-px bg-slate-200" />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6">
               {[
@@ -230,9 +240,9 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-            {industries.map((ind) => (
+            {industries.map((ind: any) => (
               <Link key={ind.name} href="/industries" className="group relative h-[148px] sm:h-[160px] lg:h-[200px] overflow-hidden bg-[#0A1931] touch-manipulation">
-                <img src={ind.img} alt={ind.name} className="w-full h-full object-cover group-hover:scale-105 group-active:scale-105 transition duration-700 opacity-90" />
+                <img src={ind.image_url || ind.img || "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80"} alt={ind.name} className="w-full h-full object-cover group-hover:scale-105 group-active:scale-105 transition duration-700 opacity-90" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#070F1F] via-[#070F1F]/20 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-2.5 sm:p-4">
                   <div className="text-white font-bold text-xs sm:text-sm leading-tight">{ind.name}</div>
@@ -249,7 +259,7 @@ export default function HomePage() {
       <section className="py-10 sm:py-12 lg:py-16 bg-white">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
           <div className="relative order-2 lg:order-1">
-            <img src="/images/safeforce.jpeg" alt="SAFE Guard FORCE guard" className="w-full h-[380px] sm:h-[440px] lg:h-[520px] object-cover object-top border border-slate-200" />
+            <img src={personnelSection?.image_url || "/images/safeforce.jpeg"} alt="SAFE Guard FORCE guard" className="w-full h-[380px] sm:h-[440px] lg:h-[520px] object-cover object-top border border-slate-200" />
             <div className="absolute -bottom-4 -right-4 hidden lg:flex bg-[#0A1931] border-2 border-white shadow-xl p-5 items-center gap-4">
               <img src="/images/safelogo.jpeg" alt="Logo" className="w-16 h-16 bg-white p-1 object-contain" />
               <div>
@@ -258,8 +268,7 @@ export default function HomePage() {
                 <div className="text-white/60 text-xs mt-1">Disciplined • Verified • Presentable</div>
               </div>
             </div>
-            {/* Mobile badge */}
-            <div className="flex lg:hidden bg-[#0A1931] p-3 items-center gap-3 mt-0 border-t-0 border border-slate-200 border-t-0">
+            <div className="flex lg:hidden bg-[#0A1931] p-3 items-center gap-3 mt-0 border border-slate-200 border-t-0">
               <img src="/images/safelogo.jpeg" alt="Logo" className="w-10 h-10 bg-white p-1 object-contain shrink-0" />
               <div>
                 <div className="text-[#C5A253] text-[10px] tracking-[0.16em] uppercase font-bold">Your Security. Our Priority.</div>
@@ -268,13 +277,24 @@ export default function HomePage() {
             </div>
           </div>
           <div className="order-1 lg:order-2">
-            <div className="text-[#C5A253] text-[10px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.20em] uppercase font-bold mb-2 sm:mb-3">Our Personnel</div>
+            <div className="text-[#C5A253] text-[10px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.20em] uppercase font-bold mb-2 sm:mb-3">
+              {personnelSection?.eyebrow || "Our Personnel"}
+            </div>
             <h2 className="text-[#0A1931] font-black text-[24px] sm:text-[28px] lg:text-[38px] leading-none tracking-tight">
-              Disciplined Personnel.<br />
-              <span className="italic font-light text-[#C5A253]">Professional Appearance.</span>
+              {personnelSection?.title ? (
+                <>
+                  {personnelSection.title}<br />
+                  <span className="italic font-light text-[#C5A253]">{personnelSection.subtitle || "Professional Appearance."}</span>
+                </>
+              ) : (
+                <>
+                  Disciplined Personnel.<br />
+                  <span className="italic font-light text-[#C5A253]">Professional Appearance.</span>
+                </>
+              )}
             </h2>
             <p className="text-slate-600 text-[13px] sm:text-[15px] leading-relaxed mt-4 sm:mt-5">
-              Every SAFE Guard FORCE guard is screened, trained and kitted for the premises they protect — from ceremonial bearing to operational vigilance. White gloves, beret with insignia, SAFE-branded belt and disciplined posture reflect the standards we enforce daily.
+              {personnelSection?.description || "Every SAFE Guard FORCE guard is screened, trained and kitted for the premises they protect — from ceremonial bearing to operational vigilance. White gloves, beret with insignia, SAFE-branded belt and disciplined posture reflect the standards we enforce daily."}
             </p>
             <ul className="mt-5 sm:mt-6 space-y-2.5 sm:space-y-3">
               {[
@@ -301,12 +321,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Stats - mobile grid 2 with borders not divide-x */}
+      {/* Stats */}
       <section className="bg-[#070F1F] py-8 sm:py-10 lg:py-16 border-t border-white/10">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 grid grid-cols-2 lg:grid-cols-4 gap-0 divide-y lg:divide-y-0 divide-white/10 lg:divide-x border border-white/10 lg:border-0">
           {[
             ["24/7", "Professional Assistance"],
-            ["12+", "Integrated Service Categories"],
+            [`${services?.length || 12}+`, "Integrated Service Categories"],
             ["100%", "Customized Service Approach"],
             ["360°", "Security & Facility Solutions"],
           ].map(([a, b]) => (
@@ -320,23 +340,32 @@ export default function HomePage() {
 
       {/* Final CTA */}
       <section className="relative min-h-[420px] sm:h-[420px] lg:h-[480px] overflow-hidden bg-[#070F1F] py-10 sm:py-0">
-        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80" alt="Corporate building night" className="absolute inset-0 w-full h-full object-cover opacity-60" />
+        <img src={ctaSection?.image_url || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80"} alt="Corporate building night" className="absolute inset-0 w-full h-full object-cover opacity-60" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#070F1F] via-[#070F1F]/80 sm:via-[#070F1F]/75 to-[#070F1F]/60 sm:to-[#070F1F]/40" />
         <div className="relative z-10 h-full min-h-[420px] sm:min-h-0 max-w-[1280px] mx-auto px-4 sm:px-6 flex flex-col justify-center py-8 sm:py-0">
           <div className="max-w-[640px]">
             <h2 className="text-white font-black text-[26px] sm:text-[30px] lg:text-[44px] leading-[0.92] sm:leading-[0.95] tracking-tight">
-              Your Property Deserves<br />
-              <span className="text-[#C5A253] italic font-light">More Than Basic Security.</span>
+              {ctaSection?.title ? (
+                <>
+                  {ctaSection.title}<br />
+                  {ctaSection.subtitle && <span className="text-[#C5A253] italic font-light">{ctaSection.subtitle}</span>}
+                </>
+              ) : (
+                <>
+                  Your Property Deserves<br />
+                  <span className="text-[#C5A253] italic font-light">More Than Basic Security.</span>
+                </>
+              )}
             </h2>
             <p className="text-white/75 sm:text-white/70 text-[13px] sm:text-sm leading-relaxed mt-3 sm:mt-4 max-w-[520px]">
-              Partner with SAFE Guard FORCE for professional security, facility management, technical maintenance, STP operations and confidential investigation solutions.
+              {ctaSection?.description || "Partner with SAFE Guard FORCE for professional security, facility management, technical maintenance, STP operations and confidential investigation solutions."}
             </p>
             <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 mt-6 sm:mt-8">
-              <Link href="/contact" className="inline-flex items-center justify-center gap-2 bg-[#C5A253] hover:bg-[#D4AF37] active:bg-[#B8941F] text-[#070F1F] px-6 sm:px-8 py-3.5 sm:py-4 text-xs tracking-[0.16em] uppercase font-bold transition min-h-[48px] touch-manipulation">
-                Request a Consultation →
+              <Link href={ctaSection?.button_url || "/contact"} className="inline-flex items-center justify-center gap-2 bg-[#C5A253] hover:bg-[#D4AF37] active:bg-[#B8941F] text-[#070F1F] px-6 sm:px-8 py-3.5 sm:py-4 text-xs tracking-[0.16em] uppercase font-bold transition min-h-[48px] touch-manipulation">
+                {ctaSection?.button_text || "Request a Consultation →"}
               </Link>
-              <a href="tel:9323581437" className="inline-flex items-center justify-center border border-white/30 hover:bg-white hover:text-[#070F1F] active:bg-white active:text-[#070F1F] text-white px-6 sm:px-8 py-3.5 sm:py-4 text-xs tracking-[0.16em] uppercase font-bold transition min-h-[48px] touch-manipulation">
-                Call Now — 9323581437
+              <a href={`tel:${primaryPhone}`} className="inline-flex items-center justify-center border border-white/30 hover:bg-white hover:text-[#070F1F] active:bg-white active:text-[#070F1F] text-white px-6 sm:px-8 py-3.5 sm:py-4 text-xs tracking-[0.16em] uppercase font-bold transition min-h-[48px] touch-manipulation">
+                Call Now — {primaryPhone}
               </a>
             </div>
           </div>

@@ -1,9 +1,27 @@
 import PageHero from "../../components/PageHero";
 import Link from "next/link";
+import { getAboutContentServer, getCoreValuesServer, getSiteSettingsServer } from "@/lib/cms-server";
 
 export const metadata = { title: "About Us — SAFE Guard FORCE" };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const [about, coreValues, settings] = await Promise.all([
+    getAboutContentServer(),
+    getCoreValuesServer(),
+    getSiteSettingsServer(),
+  ]);
+
+  const defaultValues = [
+    ["Integrity", "Honest, ethical and transparent operations."],
+    ["Discipline", "Uniformed, punctual and procedure-driven teams."],
+    ["Professionalism", "Trained manpower with clear SOPs."],
+    ["Accountability", "Supervised execution with reporting."],
+    ["Confidentiality", "Discreet handling of sensitive matters."],
+    ["Customer Satisfaction", "Responsive support and resolution."],
+    ["Safety", "Proactive risk identification & prevention."],
+    ["Environmental Responsibility", "Hygiene, STP and sustainable ops."],
+  ];
+
   return (
     <>
       <PageHero
@@ -18,9 +36,17 @@ export default function AboutPage() {
         <div className="max-w-[1280px] mx-auto px-6 grid lg:grid-cols-2 gap-12 items-start">
           <div>
             <div className="text-[#C5A253] text-[11px] tracking-[0.20em] uppercase font-bold mb-3">Who We Are</div>
-            <h2 className="text-[#0A1931] font-black text-[30px] lg:text-[40px] leading-none tracking-tight">Integrated Services. <span className="italic font-light text-[#C5A253]">One Accountable Partner.</span></h2>
-            <p className="text-slate-600 leading-relaxed mt-6">SAFE Guard FORCE / Nationwide Security Group provides integrated security, facility management, housekeeping, gardening, technical maintenance, STP operations, fire & safety and confidential investigation services. We combine disciplined manpower, structured supervision and operational reporting so every property receives consistent, professional coverage.</p>
-            <p className="text-slate-500 leading-relaxed mt-4 text-sm">Headquartered at C 517, Kailash Esplanade, Ghatkopar West, Mumbai, we serve residential societies, corporate offices, commercial complexes, hospitals, hotels, schools, factories, warehouses and event venues with customized manpower and operational plans.</p>
+            <h2 className="text-[#0A1931] font-black text-[30px] lg:text-[40px] leading-none tracking-tight">
+              {about?.title || (
+                <>Integrated Services. <span className="italic font-light text-[#C5A253]">One Accountable Partner.</span></>
+              )}
+            </h2>
+            <p className="text-slate-600 leading-relaxed mt-6">
+              {about?.description || "SAFE Guard FORCE / Nationwide Security Group provides integrated security, facility management, housekeeping, gardening, technical maintenance, STP operations, fire & safety and confidential investigation services. We combine disciplined manpower, structured supervision and operational reporting so every property receives consistent, professional coverage."}
+            </p>
+            <p className="text-slate-500 leading-relaxed mt-4 text-sm">
+              {about?.secondary_description || `Headquartered at ${settings?.address || "C 517, Kailash Esplanade, Ghatkopar West, Mumbai"}, we serve residential societies, corporate offices, commercial complexes, hospitals, hotels, schools, factories, warehouses and event venues with customized manpower and operational plans.`}
+            </p>
             <div className="grid grid-cols-2 gap-4 mt-8">
               <div className="bg-[#F8FAFC] border border-slate-100 p-5">
                 <div className="text-[#0A1931] font-bold text-sm">Mumbai-Centric</div>
@@ -35,12 +61,12 @@ export default function AboutPage() {
           <div className="space-y-6">
             <div className="grid grid-cols-5 gap-3">
               <div className="col-span-3">
-                <img src="/images/safeforce.jpeg" alt="SAFE Guard FORCE uniformed guard" className="w-full h-[380px] object-cover object-top border border-slate-200" />
+                <img src={about?.image_url || "/images/safeforce.jpeg"} alt="SAFE Guard FORCE uniformed guard" className="w-full h-[380px] object-cover object-top border border-slate-200" />
               </div>
               <div className="col-span-2 flex flex-col gap-3">
                 <div className="bg-white border border-slate-200 p-4 flex flex-col items-center text-center">
                   <img src="/images/safelogo.jpeg" alt="SAFE Guard FORCE shield" className="w-24 h-24 object-contain" />
-                  <div className="text-[#0A1931] font-black text-xs tracking-widest uppercase mt-2">SAFE GUARD FORCE</div>
+                  <div className="text-[#0A1931] font-black text-xs tracking-widest uppercase mt-2">{settings?.site_name || "SAFE GUARD FORCE"}</div>
                   <div className="text-[#C5A253] text-[10px] tracking-widest uppercase font-bold">Your Security. Our Priority.</div>
                 </div>
                 <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&q=80" alt="Team" className="h-[118px] w-full object-cover" />
@@ -87,21 +113,21 @@ export default function AboutPage() {
             <h2 className="text-[#0A1931] font-black text-[32px] leading-none">Principles That Guide Us</h2>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {[
-              ["Integrity", "Honest, ethical and transparent operations."],
-              ["Discipline", "Uniformed, punctual and procedure-driven teams."],
-              ["Professionalism", "Trained manpower with clear SOPs."],
-              ["Accountability", "Supervised execution with reporting."],
-              ["Confidentiality", "Discreet handling of sensitive matters."],
-              ["Customer Satisfaction", "Responsive support and resolution."],
-              ["Safety", "Proactive risk identification & prevention."],
-              ["Environmental Responsibility", "Hygiene, STP and sustainable ops."],
-            ].map(([t, d]) => (
-              <div key={t} className="border border-slate-200 p-6 hover:border-[#C5A253]/40 hover:shadow-md transition">
-                <div className="text-[#C5A253] text-xs tracking-[0.18em] uppercase font-bold">{t}</div>
-                <div className="text-slate-600 text-sm leading-relaxed mt-2">{d}</div>
-              </div>
-            ))}
+            {coreValues && coreValues.length > 0 ? (
+              coreValues.map((v: any) => (
+                <div key={v.id || v.title} className="border border-slate-200 p-6 hover:border-[#C5A253]/40 hover:shadow-md transition">
+                  <div className="text-[#C5A253] text-xs tracking-[0.18em] uppercase font-bold">{v.title}</div>
+                  <div className="text-slate-600 text-sm leading-relaxed mt-2">{v.description}</div>
+                </div>
+              ))
+            ) : (
+              defaultValues.map(([t, d]) => (
+                <div key={t} className="border border-slate-200 p-6 hover:border-[#C5A253]/40 hover:shadow-md transition">
+                  <div className="text-[#C5A253] text-xs tracking-[0.18em] uppercase font-bold">{t}</div>
+                  <div className="text-slate-600 text-sm leading-relaxed mt-2">{d}</div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </section>

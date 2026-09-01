@@ -1,6 +1,26 @@
 import { createClient as createBrowser } from "./supabase/client";
-import { fallbackSiteSettings, fallbackHeroSlides, fallbackServices, fallbackIndustries, fallbackNavigation } from "./data/fallback";
-import type { SiteSettings, HeroSlide, Service, Industry, NavigationItem } from "./types";
+import {
+  fallbackSiteSettings,
+  fallbackHeroSlides,
+  fallbackServices,
+  fallbackIndustries,
+  fallbackNavigation,
+  fallbackTestimonials,
+  fallbackFaqs,
+  fallbackAboutContent,
+  fallbackCoreValues,
+} from "./data/fallback";
+import type {
+  SiteSettings,
+  HeroSlide,
+  Service,
+  Industry,
+  NavigationItem,
+  Testimonial,
+  FAQ,
+  AboutContent,
+  CoreValue,
+} from "./types";
 
 function isBrowser() { return typeof window !== "undefined"; }
 
@@ -83,5 +103,43 @@ export async function getNavigation(): Promise<NavigationItem[]> {
   return fallbackNavigation;
 }
 
-// Server-side versions (use import from @supabase/ssr via createServerClient)
-// For simplicity, public pages will use browser client even on server? Provide server helpers separately.
+export async function getTestimonials(publishedOnly = true): Promise<Testimonial[]> {
+  try {
+    const supabase = createBrowser();
+    let q = supabase.from("testimonials").select("*").order("display_order");
+    if (publishedOnly) q = q.eq("is_published", true);
+    const { data } = await q;
+    if (data && data.length) return data as Testimonial[];
+  } catch {}
+  return fallbackTestimonials.filter(t=> !publishedOnly || t.is_published);
+}
+
+export async function getFaqs(publishedOnly = true): Promise<FAQ[]> {
+  try {
+    const supabase = createBrowser();
+    let q = supabase.from("faqs").select("*").order("display_order");
+    if (publishedOnly) q = q.eq("is_published", true);
+    const { data } = await q;
+    if (data && data.length) return data as FAQ[];
+  } catch {}
+  return fallbackFaqs.filter(f=> !publishedOnly || f.is_published);
+}
+
+export async function getAboutContent(): Promise<AboutContent> {
+  try {
+    const supabase = createBrowser();
+    const { data } = await supabase.from("about_content").select("*").eq("section_key", "about_main").single();
+    if (data) return data as AboutContent;
+  } catch {}
+  return fallbackAboutContent;
+}
+
+export async function getCoreValues(): Promise<CoreValue[]> {
+  try {
+    const supabase = createBrowser();
+    const { data } = await supabase.from("core_values").select("*").eq("is_visible", true).order("display_order");
+    if (data && data.length) return data as CoreValue[];
+  } catch {}
+  return fallbackCoreValues;
+}
+

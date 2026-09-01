@@ -352,19 +352,47 @@ create policy "Public can read about_content" on about_content for select using 
 create policy "Auth can manage about_content" on about_content for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
 create policy "Public can read core_values visible" on core_values for select using (is_visible = true);
 create policy "Auth can manage core_values" on core_values for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
-create policy "Public can read media_library" on media_library for select using (true);
-create policy "Auth can manage media_library" on media_library for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
-create policy "Site settings auth manage" on site_settings for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
-create policy "Profiles auth manage" on profiles for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
-create policy "Profiles public read" on profiles for select using (true);
+-- newsletter_subscribers
+create table if not exists newsletter_subscribers (
+  id uuid primary key default gen_random_uuid(),
+  email text unique not null,
+  is_active boolean default true,
+  created_at timestamptz default now()
+);
+
+-- appointments (consultation / service requests)
+create table if not exists appointments (
+  id uuid primary key default gen_random_uuid(),
+  full_name text not null,
+  phone text not null,
+  email text,
+  service_type text,
+  preferred_date text,
+  preferred_time text,
+  property_type text,
+  location text,
+  notes text,
+  status text default 'Pending' check (status in ('Pending', 'Approved', 'Completed', 'Cancelled')),
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+alter table newsletter_subscribers enable row level security;
+alter table appointments enable row level security;
+
+create policy "Public insert newsletter" on newsletter_subscribers for insert with check (true);
+create policy "Auth manage newsletter" on newsletter_subscribers for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
+
+create policy "Public insert appointments" on appointments for insert with check (true);
+create policy "Auth manage appointments" on appointments for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
 
 -- Storage bucket
-insert into storage.buckets (id, name, public) values ('media','media', true) on conflict (id) do nothing;
+insert into storage.buckets (id, name, public) values ('safe_guard_media','safe_guard_media', true) on conflict (id) do nothing;
 -- storage policies
-create policy "Public read media" on storage.objects for select using (bucket_id = 'media');
-create policy "Auth upload media" on storage.objects for insert with check (bucket_id = 'media' and auth.role() = 'authenticated');
-create policy "Auth update media" on storage.objects for update using (bucket_id = 'media' and auth.role() = 'authenticated');
-create policy "Auth delete media" on storage.objects for delete using (bucket_id = 'media' and auth.role() = 'authenticated');
+create policy "Public read media" on storage.objects for select using (bucket_id = 'safe_guard_media');
+create policy "Auth upload media" on storage.objects for insert with check (bucket_id = 'safe_guard_media' and auth.role() = 'authenticated');
+create policy "Auth update media" on storage.objects for update using (bucket_id = 'safe_guard_media' and auth.role() = 'authenticated');
+create policy "Auth delete media" on storage.objects for delete using (bucket_id = 'safe_guard_media' and auth.role() = 'authenticated');
 
 -- Updated_at trigger
 create or replace function update_updated_at() returns trigger as $$ begin new.updated_at = now(); return new; end; $$ language plpgsql;
@@ -372,3 +400,4 @@ create trigger trg_site_settings_updated before update on site_settings for each
 create trigger trg_services_updated before update on services for each row execute function update_updated_at();
 create trigger trg_hero_updated before update on hero_slides for each row execute function update_updated_at();
 create trigger trg_profiles_updated before update on profiles for each row execute function update_updated_at();
+

@@ -1,8 +1,53 @@
 import PageHero from "../../components/PageHero";
+import { getSiteSettingsServer } from "@/lib/cms-server";
+import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
 
 export const metadata = { title: "Contact Us — SAFE Guard FORCE" };
 
-export default function ContactPage() {
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams?: { submitted?: string };
+}) {
+  const settings = await getSiteSettingsServer();
+  const primaryPhone = settings?.primary_phone || "9323581437";
+  const secondaryPhone = settings?.secondary_phone || "9136645289";
+  const whatsappNumber = settings?.whatsapp_number || "919323581437";
+  const email = settings?.email || "info@safeguardforce.in";
+  const address = settings?.address || "C 517, Kailash Esplanade, Opp. Shreyash Cinema, LBS Marg, Ghatkopar West, Mumbai — 400086";
+  const googleMapsUrl = settings?.google_maps_url || "https://maps.google.com/?q=C+517+Kailash+Esplanade+Ghatkopar+West+Mumbai";
+
+  async function submitEnquiry(formData: FormData) {
+    "use server";
+    const full_name = formData.get("full_name") as string;
+    const phone = formData.get("phone") as string;
+    const emailVal = (formData.get("email") as string) || null;
+    const company_name = (formData.get("company_name") as string) || null;
+    const location = (formData.get("location") as string) || null;
+    const property_type = (formData.get("property_type") as string) || null;
+    const service_required = (formData.get("service_required") as string) || null;
+    const message = (formData.get("message") as string) || null;
+
+    const supabase = await createClient();
+    await supabase.from("contact_enquiries").insert({
+      full_name,
+      phone,
+      email: emailVal,
+      company_name,
+      location,
+      property_type,
+      service_required,
+      message,
+      status: "New",
+    });
+
+    revalidatePath("/admin/enquiries");
+    revalidatePath("/contact");
+  }
+
+  const isSubmitted = searchParams?.submitted === "true";
+
   return (
     <>
       <PageHero
@@ -20,32 +65,32 @@ export default function ContactPage() {
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 bg-[#C5A253] flex items-center justify-center text-[#0A1931] font-black text-sm">SG</div>
                 <div>
-                  <div className="font-black tracking-widest text-sm">SAFE GUARD FORCE</div>
-                  <div className="text-[#C5A253] text-[10px] tracking-[0.24em] uppercase font-semibold">Nationwide Security Group</div>
+                  <div className="font-black tracking-widest text-sm uppercase">{settings?.site_name || "SAFE GUARD FORCE"}</div>
+                  <div className="text-[#C5A253] text-[10px] tracking-[0.24em] uppercase font-semibold">{settings?.tagline || "Nationwide Security Group"}</div>
                 </div>
               </div>
               <div className="space-y-5">
                 <div>
                   <div className="text-white/40 text-[11px] tracking-[0.18em] uppercase font-bold">Call Us — 24/7</div>
-                  <a href="tel:9323581437" className="block text-2xl font-black mt-1 hover:text-[#C5A253] transition">9323581437</a>
-                  <a href="tel:9136645289" className="block text-xl font-bold hover:text-[#C5A253] transition">9136645289</a>
+                  <a href={`tel:${primaryPhone}`} className="block text-2xl font-black mt-1 hover:text-[#C5A253] transition">{primaryPhone}</a>
+                  {secondaryPhone && (
+                    <a href={`tel:${secondaryPhone}`} className="block text-xl font-bold hover:text-[#C5A253] transition">{secondaryPhone}</a>
+                  )}
                   <div className="flex gap-2 mt-3">
-                    <a href="tel:9323581437" className="flex-1 bg-[#C5A253] text-[#0A1931] text-center py-3 text-xs tracking-[0.16em] uppercase font-bold">Call Now</a>
-                    <a href="https://wa.me/919323581437?text=Hello%20SAFE%20Guard%20FORCE%2C%20I%20would%20like%20to%20discuss%20your%20services." target="_blank" className="flex-1 border border-white/20 text-center py-3 text-xs tracking-[0.16em] uppercase font-bold hover:bg-white hover:text-[#0A1931] transition">WhatsApp</a>
+                    <a href={`tel:${primaryPhone}`} className="flex-1 bg-[#C5A253] text-[#0A1931] text-center py-3 text-xs tracking-[0.16em] uppercase font-bold">Call Now</a>
+                    <a href={`https://wa.me/${whatsappNumber}?text=Hello%20SAFE%20Guard%20FORCE%2C%20I%20would%20like%20to%20discuss%20your%20services.`} target="_blank" rel="noopener noreferrer" className="flex-1 border border-white/20 text-center py-3 text-xs tracking-[0.16em] uppercase font-bold hover:bg-white hover:text-[#0A1931] transition">WhatsApp</a>
                   </div>
                 </div>
                 <div className="border-t border-white/10 pt-5">
                   <div className="text-white/40 text-[11px] tracking-[0.18em] uppercase font-bold">Head Office</div>
-                  <p className="text-white/80 text-sm leading-relaxed mt-2">
-                    C 517, Kailash Esplanade<br />
-                    Opp. Shreyash Cinema, LBS Marg<br />
-                    Ghatkopar West, Mumbai — 400086
+                  <p className="text-white/80 text-sm leading-relaxed mt-2 whitespace-pre-line">
+                    {address}
                   </p>
-                  <a href="https://maps.google.com/?q=C+517+Kailash+Esplanade+Ghatkopar+West+Mumbai" target="_blank" className="inline-flex mt-3 bg-white text-[#0A1931] px-4 py-2 text-xs tracking-[0.14em] uppercase font-bold">Get Directions →</a>
+                  <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex mt-3 bg-white text-[#0A1931] px-4 py-2 text-xs tracking-[0.14em] uppercase font-bold">Get Directions →</a>
                 </div>
                 <div className="border-t border-white/10 pt-5">
                   <div className="text-white/40 text-[11px] tracking-[0.18em] uppercase font-bold">Assistance Hours</div>
-                  <div className="text-white text-sm mt-2 font-semibold">24/7 Professional Assistance</div>
+                  <div className="text-white text-sm mt-2 font-semibold">{settings?.support_hours || "24/7 Professional Assistance"}</div>
                   <div className="text-white/60 text-xs mt-1">Prompt response for enquiries and operational support.</div>
                 </div>
               </div>
@@ -61,7 +106,7 @@ export default function ContactPage() {
                   <div className="bg-[#0A1931] text-white px-4 py-2 text-xs tracking-widest uppercase font-bold shadow-lg">📍 Kailash Esplanade, LBS Marg</div>
                 </div>
               </div>
-              <a href="https://maps.google.com/?q=C+517+Kailash+Esplanade+Ghatkopar+West+Mumbai" target="_blank" className="block mt-3 bg-[#0A1931] text-white text-center py-3 text-xs tracking-[0.16em] uppercase font-bold">Open in Google Maps</a>
+              <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer" className="block mt-3 bg-[#0A1931] text-white text-center py-3 text-xs tracking-[0.16em] uppercase font-bold">Open in Google Maps</a>
             </div>
           </div>
 
@@ -72,90 +117,99 @@ export default function ContactPage() {
                 <h2 className="text-white font-black text-xl tracking-tight">Request a Consultation</h2>
                 <p className="text-white/60 text-sm mt-1">Tell us about your premises and service needs — we&apos;ll respond promptly.</p>
               </div>
-              <form className="p-8 space-y-5" action="mailto:info@safeguardforce.in" method="get" encType="text/plain">
-                <div className="grid md:grid-cols-2 gap-5">
-                  <div>
-                    <label className="text-[#0A1931] text-xs tracking-[0.12em] uppercase font-bold">Full Name *</label>
-                    <input required placeholder="Your name" className="mt-2 w-full border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:border-[#C5A253] focus:ring-1 focus:ring-[#C5A253] transition" />
-                  </div>
-                  <div>
-                    <label className="text-[#0A1931] text-xs tracking-[0.12em] uppercase font-bold">Phone Number *</label>
-                    <input required placeholder="93235 81437" className="mt-2 w-full border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:border-[#C5A253] transition" />
-                  </div>
-                </div>
 
-                <div className="grid md:grid-cols-2 gap-5">
-                  <div>
-                    <label className="text-[#0A1931] text-xs tracking-[0.12em] uppercase font-bold">Company / Society Name</label>
-                    <input placeholder="e.g. Green Valley CHS / Acme Corp" className="mt-2 w-full border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:border-[#C5A253] transition" />
-                  </div>
-                  <div>
-                    <label className="text-[#0A1931] text-xs tracking-[0.12em] uppercase font-bold">Email</label>
-                    <input type="email" placeholder="you@company.com" className="mt-2 w-full border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:border-[#C5A253] transition" />
-                  </div>
+              {isSubmitted ? (
+                <div className="p-8 text-center bg-emerald-50">
+                  <div className="w-12 h-12 bg-emerald-500 text-white rounded-full flex items-center justify-center mx-auto text-xl font-bold mb-3">✓</div>
+                  <h3 className="text-lg font-bold text-emerald-900">Enquiry Received!</h3>
+                  <p className="text-sm text-emerald-700 mt-1">Thank you for reaching out. Our operations team will contact you within 2-4 hours.</p>
                 </div>
-
-                <div className="grid md:grid-cols-2 gap-5">
-                  <div>
-                    <label className="text-[#0A1931] text-xs tracking-[0.12em] uppercase font-bold">Location</label>
-                    <input placeholder="e.g. Ghatkopar, Powai, Andheri" className="mt-2 w-full border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:border-[#C5A253] transition" />
+              ) : (
+                <form className="p-8 space-y-5" action={submitEnquiry}>
+                  <div className="grid md:grid-cols-2 gap-5">
+                    <div>
+                      <label className="text-[#0A1931] text-xs tracking-[0.12em] uppercase font-bold">Full Name *</label>
+                      <input name="full_name" required placeholder="Your name" className="mt-2 w-full border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:border-[#C5A253] focus:ring-1 focus:ring-[#C5A253] transition" />
+                    </div>
+                    <div>
+                      <label className="text-[#0A1931] text-xs tracking-[0.12em] uppercase font-bold">Phone Number *</label>
+                      <input name="phone" required placeholder="93235 81437" className="mt-2 w-full border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:border-[#C5A253] transition" />
+                    </div>
                   </div>
+
+                  <div className="grid md:grid-cols-2 gap-5">
+                    <div>
+                      <label className="text-[#0A1931] text-xs tracking-[0.12em] uppercase font-bold">Company / Society Name</label>
+                      <input name="company_name" placeholder="e.g. Green Valley CHS / Acme Corp" className="mt-2 w-full border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:border-[#C5A253] transition" />
+                    </div>
+                    <div>
+                      <label className="text-[#0A1931] text-xs tracking-[0.12em] uppercase font-bold">Email</label>
+                      <input name="email" type="email" placeholder="you@company.com" className="mt-2 w-full border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:border-[#C5A253] transition" />
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-5">
+                    <div>
+                      <label className="text-[#0A1931] text-xs tracking-[0.12em] uppercase font-bold">Location</label>
+                      <input name="location" placeholder="e.g. Ghatkopar, Powai, Andheri" className="mt-2 w-full border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:border-[#C5A253] transition" />
+                    </div>
+                    <div>
+                      <label className="text-[#0A1931] text-xs tracking-[0.12em] uppercase font-bold">Property Type</label>
+                      <select name="property_type" className="mt-2 w-full border border-slate-200 px-4 py-3 text-sm bg-white focus:outline-none focus:border-[#C5A253]">
+                        <option value="">Select property type</option>
+                        <option value="Residential Society">Residential Society</option>
+                        <option value="Corporate Office">Corporate Office</option>
+                        <option value="Commercial Complex / Mall">Commercial Complex / Mall</option>
+                        <option value="Hospital / Clinic">Hospital / Clinic</option>
+                        <option value="Hotel / Restaurant">Hotel / Restaurant</option>
+                        <option value="School / Institution">School / Institution</option>
+                        <option value="Factory / Warehouse">Factory / Warehouse</option>
+                        <option value="Construction Site">Construction Site</option>
+                        <option value="Event / Venue">Event / Venue</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+
                   <div>
-                    <label className="text-[#0A1931] text-xs tracking-[0.12em] uppercase font-bold">Property Type</label>
-                    <select className="mt-2 w-full border border-slate-200 px-4 py-3 text-sm bg-white focus:outline-none focus:border-[#C5A253]">
-                      <option>Select property type</option>
-                      <option>Residential Society</option>
-                      <option>Corporate Office</option>
-                      <option>Commercial Complex / Mall</option>
-                      <option>Hospital / Clinic</option>
-                      <option>Hotel / Restaurant</option>
-                      <option>School / Institution</option>
-                      <option>Factory / Warehouse</option>
-                      <option>Construction Site</option>
-                      <option>Event / Venue</option>
-                      <option>Other</option>
+                    <label className="text-[#0A1931] text-xs tracking-[0.12em] uppercase font-bold">Service Required *</label>
+                    <select name="service_required" required className="mt-2 w-full border border-slate-200 px-4 py-3 text-sm bg-white focus:outline-none focus:border-[#C5A253]">
+                      <option value="">Select a service</option>
+                      <option value="Security Services">Security Services</option>
+                      <option value="Facility Management">Facility Management</option>
+                      <option value="Housekeeping">Housekeeping</option>
+                      <option value="Gardening & Landscaping">Gardening & Landscaping</option>
+                      <option value="Fire & Safety">Fire & Safety</option>
+                      <option value="Dog Squad">Dog Squad</option>
+                      <option value="Bouncer / Event Security">Bouncer / Event Security</option>
+                      <option value="Technical Maintenance">Technical Maintenance</option>
+                      <option value="Pest Control">Pest Control</option>
+                      <option value="Reception & Helpdesk Staffing">Reception & Helpdesk Staffing</option>
+                      <option value="Detective & Investigation (Confidential)">Detective & Investigation (Confidential)</option>
+                      <option value="STP Operation & Maintenance">STP Operation & Maintenance</option>
+                      <option value="Multiple / Integrated Services">Multiple / Integrated Services</option>
                     </select>
                   </div>
-                </div>
 
-                <div>
-                  <label className="text-[#0A1931] text-xs tracking-[0.12em] uppercase font-bold">Service Required *</label>
-                  <select required className="mt-2 w-full border border-slate-200 px-4 py-3 text-sm bg-white focus:outline-none focus:border-[#C5A253]">
-                    <option value="">Select a service</option>
-                    <option>Security Services</option>
-                    <option>Facility Management</option>
-                    <option>Housekeeping</option>
-                    <option>Gardening & Landscaping</option>
-                    <option>Fire & Safety</option>
-                    <option>Dog Squad</option>
-                    <option>Bouncer / Event Security</option>
-                    <option>Technical Maintenance</option>
-                    <option>Pest Control</option>
-                    <option>Reception & Helpdesk Staffing</option>
-                    <option>Detective & Investigation (Confidential)</option>
-                    <option>STP Operation & Maintenance</option>
-                    <option>Multiple / Integrated Services</option>
-                  </select>
-                </div>
+                  <div>
+                    <label className="text-[#0A1931] text-xs tracking-[0.12em] uppercase font-bold">Message</label>
+                    <textarea name="message" rows={4} placeholder="Describe your premises, headcount, shift timings and any specific requirements..." className="mt-2 w-full border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:border-[#C5A253] transition" />
+                  </div>
 
-                <div>
-                  <label className="text-[#0A1931] text-xs tracking-[0.12em] uppercase font-bold">Message</label>
-                  <textarea rows={4} placeholder="Describe your premises, headcount, shift timings and any specific requirements..." className="mt-2 w-full border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:border-[#C5A253] transition" />
-                </div>
+                  <button type="submit" className="w-full bg-[#C5A253] hover:bg-[#B8941F] text-[#0A1931] py-4 text-xs tracking-[0.18em] uppercase font-black transition cursor-pointer">
+                    Submit Enquiry →
+                  </button>
 
-                <button type="submit" className="w-full bg-[#C5A253] hover:bg-[#B8941F] text-[#0A1931] py-4 text-xs tracking-[0.18em] uppercase font-black transition">
-                  Request a Consultation →
-                </button>
+                  <p className="text-slate-400 text-xs leading-relaxed text-center">
+                    By submitting, you agree to our Privacy Policy. Investigation services are handled confidentially and lawfully.
+                  </p>
 
-                <p className="text-slate-400 text-xs leading-relaxed text-center">
-                  By submitting, you agree to our Privacy Policy. Investigation services are handled confidentially and lawfully.
-                </p>
-
-                <div className="flex gap-3 pt-2">
-                  <a href="tel:9323581437" className="flex-1 border border-slate-200 py-3 text-center text-xs tracking-[0.14em] uppercase font-bold text-[#0A1931] hover:bg-slate-50">Call 9323581437</a>
-                  <a href="https://wa.me/919323581437?text=Hello%20SAFE%20Guard%20FORCE%2C%20I%20would%20like%20to%20discuss%20your%20services." target="_blank" className="flex-1 border border-slate-200 py-3 text-center text-xs tracking-[0.14em] uppercase font-bold text-[#0A1931] hover:bg-slate-50">WhatsApp Us</a>
-                </div>
-              </form>
+                  <div className="flex gap-3 pt-2">
+                    <a href={`tel:${primaryPhone}`} className="flex-1 border border-slate-200 py-3 text-center text-xs tracking-[0.14em] uppercase font-bold text-[#0A1931] hover:bg-slate-50">Call {primaryPhone}</a>
+                    <a href={`https://wa.me/${whatsappNumber}?text=Hello%20SAFE%20Guard%20FORCE%2C%20I%20would%20like%20to%20discuss%20your%20services.`} target="_blank" rel="noopener noreferrer" className="flex-1 border border-slate-200 py-3 text-center text-xs tracking-[0.14em] uppercase font-bold text-[#0A1931] hover:bg-slate-50">WhatsApp Us</a>
+                  </div>
+                </form>
+              )}
             </div>
           </div>
         </div>

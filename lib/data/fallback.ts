@@ -120,3 +120,92 @@ export const fallbackIndustries = [
   { id: "11", name: "Events", slug: "events", short_description: "Bouncers, crowd control.", image_url: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=600&q=80", icon: "building", is_featured: true, is_published: true, display_order: 11 },
   { id: "12", name: "Other Institutions", slug: "other-institutions", short_description: "Customized solutions.", image_url: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&q=80", icon: "building", is_featured: false, is_published: true, display_order: 12 },
 ];
+
+export const fallbackTestimonials: any[] = [
+  {
+    id: "1",
+    name: "Rajesh Sharma",
+    designation: "Secretary",
+    company: "Greenwoods Heights CHS",
+    content: "SAFE Guard FORCE has transformed our society's security and housekeeping operations. Their guards are well-groomed, punctual, and highly disciplined.",
+    image_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80",
+    rating: 5,
+    display_order: 1,
+    is_published: true,
+  },
+  {
+    id: "2",
+    name: "Pooja Mehta",
+    designation: "Facility Director",
+    company: "OmniTech Business Park",
+    content: "From daily technical maintenance to 24/7 manned security and housekeeping, their integrated management under one roof saves us tremendous time and operational headache.",
+    image_url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80",
+    rating: 5,
+    display_order: 2,
+    is_published: true,
+  },
+  {
+    id: "3",
+    name: "Vikram Singhania",
+    designation: "Operations Head",
+    company: "Apex Retail Mall",
+    content: "Their event and crowd management team is top tier. Professional access control, prompt emergency escalation, and complete transparency in reporting.",
+    image_url: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80",
+    rating: 5,
+    display_order: 3,
+    is_published: true,
+  },
+];
+
+export const fallbackFaqs: any[] = [
+  {
+    id: "1",
+    question: "What areas do you provide security & facility management services in?",
+    answer: "We provide comprehensive security and facility management services across the entire Mumbai Metropolitan Region (MMR), including Mumbai City, Western Suburbs, Eastern Suburbs, Thane, Navi Mumbai, and nationwide capability for multi-location projects.",
+    category: "General",
+    display_order: 1,
+    is_published: true,
+  },
+  {
+    id: "2",
+    question: "Are your security personnel trained, verified, and supervised?",
+    answer: "Yes, 100%. All our security guards undergo thorough police verification, antecedent background checks, physical fitness assessments, and structured training in access control, visitor management, fire emergency response, and professional etiquette before deployment.",
+    category: "Security",
+    display_order: 2,
+    is_published: true,
+  },
+  {
+    id: "3",
+    question: "Can we bundle security, housekeeping, and technical maintenance under one contract?",
+    answer: "Absolutely! We specialize in integrated facility solutions under one roof. Combining security, housekeeping, technical maintenance, STP operations, and pest control provides cost efficiencies, a single point of accountability, and coordinated operational reporting.",
+    category: "Facility Management",
+    display_order: 3,
+    is_published: true,
+  },
+  {
+    id: "4",
+    question: "How quickly can you deploy security or facility manpower to our premises?",
+    answer: "For emergency requirements, we can mobilize guards within 24 hours. For comprehensive society or facility transitions, we typically conduct a preliminary site audit within 48 hours and execute a seamless phased deployment within 3 to 7 days.",
+    category: "Operations",
+    display_order: 4,
+    is_published: true,
+  },
+];
+
+export const fallbackAboutContent: any = {
+  id: "1",
+  section_key: "about_main",
+  title: "Integrated Security & Facility Solutions Under One Roof",
+  subtitle: "Disciplined execution, accountable supervision, and customized services for residential, commercial, and industrial premises across Mumbai.",
+  description: "SAFE Guard FORCE was established with a singular vision: to deliver unified, high-standard protection and facility operations that property managers, societies, and enterprises can trust implicitly.",
+  secondary_description: "From ceremonial guarding to technical maintenance, STP operations, and corporate investigations, our teams operate with military precision and customer-first courtesy.",
+  image_url: "/images/safeforce.jpeg",
+};
+
+export const fallbackCoreValues: any[] = [
+  { id: "1", title: "Discipline & Integrity", description: "Strict uniform standards, antecedent verification, and uncompromised ethical conduct.", icon: "shield", display_order: 1, is_visible: true },
+  { id: "2", title: "Accountable Supervision", description: "Regular surprise day & night inspections with transparent digital audit reporting.", icon: "building", display_order: 2, is_visible: true },
+  { id: "3", title: "24/7 Rapid Response", description: "Round-the-clock emergency support and operational escalation standby.", icon: "flame", display_order: 3, is_visible: true },
+  { id: "4", title: "Integrated Excellence", description: "Seamless coordination across security, housekeeping, and engineering services.", icon: "sparkles", display_order: 4, is_visible: true },
+];
+

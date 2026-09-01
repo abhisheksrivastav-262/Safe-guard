@@ -227,3 +227,26 @@ export interface CoreValue {
   display_order: number;
   is_visible: boolean;
 }
+
+export interface Appointment {
+  id: string;
+  full_name: string;
+  phone: string;
+  email: string | null;
+  service_type: string | null;
+  preferred_date: string | null;
+  preferred_time: string | null;
+  property_type: string | null;
+  location: string | null;
+  notes: string | null;
+  status: "Pending" | "Approved" | "Completed" | "Cancelled";
+  created_at: string;
+  updated_at: string;
+}
+
+export interface NewsletterSubscriber {
+  id: string;
+  email: string;
+  is_active: boolean;
+  created_at: string;
+}

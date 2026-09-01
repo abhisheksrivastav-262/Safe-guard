@@ -1,8 +1,8 @@
-import { createClient } from "./server";
+import { createServiceClient } from "./server";
 import { v4 as uuidv4 } from "uuid";
 
 export async function uploadImage(file: File, folder: string = "general") {
-  const supabase = await createClient();
+  const supabase = await createServiceClient();
   
   const fileExt = file.name.split(".").pop();
   const fileName = `${folder}/${uuidv4()}.${fileExt}`;
@@ -29,7 +29,7 @@ export async function uploadImage(file: File, folder: string = "general") {
 export async function deleteImage(url: string) {
   if (!url || !url.includes("safe_guard_media")) return;
   
-  const supabase = await createClient();
+  const supabase = await createServiceClient();
   // Extract path from public URL
   // e.g. https://dhqzxgtmsjgxkwalrstm.supabase.co/storage/v1/object/public/safe_guard_media/folder/file.jpg
   try {
@@ -51,7 +51,7 @@ export async function deleteImage(url: string) {
 }
 
 export async function listImages() {
-  const supabase = await createClient();
+  const supabase = await createServiceClient();
   // Since list() only works per folder, we might need to list all folders,
   // or we can just query the Gallery items. For a real media library,
   // it's easier to create a `media` table in the database that stores references

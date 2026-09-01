@@ -6,17 +6,18 @@ import { usePathname } from "next/navigation";
 const navigation = [
   { name: "Dashboard", href: "/admin", icon: "📊" },
   { name: "Hero Slides", href: "/admin/hero", icon: "🖼️" },
-  { name: "Homepage", href: "/admin/homepage", icon: "🏠" },
+  { name: "Homepage Sections", href: "/admin/homepage", icon: "🏠" },
   { name: "Services", href: "/admin/services", icon: "🛡️" },
   { name: "Industries", href: "/admin/industries", icon: "🏢" },
   { name: "About Content", href: "/admin/about", icon: "ℹ️" },
   { name: "Media Library", href: "/admin/media", icon: "📁" },
   { name: "Enquiries", href: "/admin/enquiries", icon: "📩" },
+  { name: "Appointments", href: "/admin/appointments", icon: "📅" },
   { name: "Testimonials", href: "/admin/testimonials", icon: "⭐" },
   { name: "FAQs", href: "/admin/faqs", icon: "❓" },
-  { name: "Navigation", href: "/admin/navigation", icon: "🧭" },
-  { name: "SEO", href: "/admin/seo", icon: "🔍" },
-  { name: "Settings", href: "/admin/settings", icon: "⚙️" },
+  { name: "Navigation Menu", href: "/admin/navigation", icon: "🧭" },
+  { name: "SEO Settings", href: "/admin/seo", icon: "🔍" },
+  { name: "Website Settings", href: "/admin/settings", icon: "⚙️" },
 ];
 
 export default function AdminSidebar({
@@ -78,7 +79,7 @@ export default function AdminSidebar({
           })}
         </nav>
       </div>
-      <div className="p-4 border-t border-white/10">
+      <div className="p-4 border-t border-white/10 space-y-2">
         <Link
           href="/"
           target="_blank"
@@ -86,6 +87,14 @@ export default function AdminSidebar({
         >
           <span>👁️</span> Preview Website
         </Link>
+        <form action="/api/auth/logout" method="POST">
+          <button
+            type="submit"
+            className="flex items-center justify-center gap-2 w-full bg-red-950/40 hover:bg-red-900/60 text-red-300 py-2 rounded text-xs tracking-wider uppercase transition font-bold border border-red-800/40"
+          >
+            <span>🚪</span> Logout
+          </button>
+        </form>
       </div>
       </div>
     </>
