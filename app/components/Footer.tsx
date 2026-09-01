@@ -4,9 +4,14 @@ import { useEffect, useState } from "react";
 import { getSiteSettings } from "@/lib/cms";
 import type { SiteSettings } from "@/lib/types";
 
+import { usePathname } from "next/navigation";
+
 export default function Footer() {
+  const pathname = usePathname();
   const [s, setS] = useState<SiteSettings | null>(null);
   useEffect(()=>{ getSiteSettings().then(setS).catch(()=>{});},[]);
+  
+  if (pathname?.startsWith("/admin")) return null;
   const primaryPhone = s?.primary_phone || "9323581437";
   const secondaryPhone = s?.secondary_phone || "9136645289";
   const address = s?.address || "C 517, Kailash Esplanade";

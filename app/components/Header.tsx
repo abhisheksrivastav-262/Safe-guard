@@ -13,13 +13,18 @@ const defaultServices = [
   { label: "Detective & Investigation", href: "/detective-services" },
 ];
 
+import { usePathname } from "next/navigation";
+
 export default function Header() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(true);
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [navItems, setNavItems] = useState<NavigationItem[] | null>(null);
+
+  if (pathname?.startsWith("/admin")) return null;
 
   useEffect(() => {
     getSiteSettings().then(setSettings).catch(()=>{});
