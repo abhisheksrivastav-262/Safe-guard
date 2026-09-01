@@ -1,4 +1,4 @@
-import PageHero from "../components/PageHero";
+import PageHero from "../../components/PageHero";
 
 export const metadata = { title: "Contact Us — SAFE Guard FORCE" };
 

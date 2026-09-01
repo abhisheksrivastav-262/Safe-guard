@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import ImageUploader from "../../components/ImageUploader";
 
 export default async function EditServicePage({ params }: { params: { id: string } }) {
   const supabase = await createClient();
@@ -21,6 +22,7 @@ export default async function EditServicePage({ params }: { params: { id: string
     const slug = formData.get("slug") as string;
     const short_description = formData.get("short_description") as string;
     const detailed_description = formData.get("detailed_description") as string;
+    const image_url = formData.get("image_url") as string;
     const order_index = parseInt(formData.get("order_index") as string) || 0;
     
     const supabaseClient = await createClient();
@@ -30,6 +32,7 @@ export default async function EditServicePage({ params }: { params: { id: string
       slug,
       short_description,
       detailed_description,
+      image_url,
       order_index,
       updated_at: new Date().toISOString(),
     }).eq("id", params.id);
@@ -50,27 +53,32 @@ export default async function EditServicePage({ params }: { params: { id: string
         <h1 className="text-2xl font-bold text-[#0A1931]">Edit Service: {service.title}</h1>
       </div>
       
-      <form action={updateService} className="bg-white p-6 rounded-lg shadow-sm border border-slate-200 space-y-4">
-        <div>
-          <label className="block text-sm font-bold text-slate-700 mb-1">Title</label>
-          <input 
-            type="text" 
-            name="title" 
-            defaultValue={service.title}
-            required
-            className="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-[#C5A253] focus:border-transparent outline-none"
-          />
-        </div>
+      <form action={updateService} className="bg-white p-6 rounded-lg shadow-sm border border-slate-200 space-y-5">
         
-        <div>
-          <label className="block text-sm font-bold text-slate-700 mb-1">Slug</label>
-          <input 
-            type="text" 
-            name="slug" 
-            defaultValue={service.slug}
-            required
-            className="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-[#C5A253] focus:border-transparent outline-none"
-          />
+        <ImageUploader name="image_url" defaultValue={service.image_url} folder="services" label="Service Image" />
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-bold text-slate-700 mb-1">Title</label>
+            <input 
+              type="text" 
+              name="title" 
+              defaultValue={service.title}
+              required
+              className="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-[#C5A253] focus:border-transparent outline-none"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-bold text-slate-700 mb-1">Slug</label>
+            <input 
+              type="text" 
+              name="slug" 
+              defaultValue={service.slug}
+              required
+              className="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-[#C5A253] focus:border-transparent outline-none"
+            />
+          </div>
         </div>
         
         <div>
@@ -103,7 +111,7 @@ export default async function EditServicePage({ params }: { params: { id: string
           ></textarea>
         </div>
         
-        <div className="pt-4 flex gap-4">
+        <div className="pt-4 flex gap-4 border-t border-slate-100">
           <button 
             type="submit"
             className="bg-[#0A1931] text-white px-6 py-2 rounded font-bold hover:bg-[#132D4F] transition"

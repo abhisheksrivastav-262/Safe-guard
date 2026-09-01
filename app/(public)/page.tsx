@@ -1,5 +1,5 @@
 import Link from "next/link";
-import HeroSlideshow from "./components/HeroSlideshow";
+import HeroSlideshow from "../components/HeroSlideshow";
 
 export const metadata = {
   title: "SAFE Guard FORCE | Integrated Security & Facility Management Mumbai",

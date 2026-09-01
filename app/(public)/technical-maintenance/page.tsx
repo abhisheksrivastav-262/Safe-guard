@@ -1,4 +1,4 @@
-import PageHero from "../components/PageHero";
+import PageHero from "../../components/PageHero";
 import Link from "next/link";
 
 export const metadata = { title: "Technical Maintenance & STP Operations — SAFE Guard FORCE" };
