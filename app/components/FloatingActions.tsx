@@ -4,8 +4,6 @@ import { usePathname } from "next/navigation";
 
 export default function FloatingActions() {
   const pathname = usePathname();
-  
-  if (pathname?.startsWith("/admin")) return null;
 
   const waMsg = encodeURIComponent("Hello SAFE Guard FORCE, I would like to discuss your security/facility management services.");
   const waLink = `https://wa.me/919323581437?text=${waMsg}`;

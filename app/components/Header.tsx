@@ -24,8 +24,6 @@ export default function Header() {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [navItems, setNavItems] = useState<NavigationItem[] | null>(null);
 
-  if (pathname?.startsWith("/admin")) return null;
-
   useEffect(() => {
     getSiteSettings().then(setSettings).catch(()=>{});
     getNavigation().then(setNavItems).catch(()=>{});
