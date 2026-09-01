@@ -19,14 +19,33 @@ const navigation = [
   { name: "Settings", href: "/admin/settings", icon: "⚙️" },
 ];
 
-export default function AdminSidebar() {
+export default function AdminSidebar({
+  isOpen = false,
+  setIsOpen = () => {},
+}: {
+  isOpen?: boolean;
+  setIsOpen?: (val: boolean) => void;
+}) {
   const pathname = usePathname();
 
-  // Don't show sidebar on login page
   if (pathname === "/admin/login") return null;
 
   return (
-    <div className="w-64 bg-[#0A1931] min-h-screen text-white flex flex-col fixed inset-y-0 left-0 z-50">
+    <>
+      {/* Mobile overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <div
+        className={`w-64 bg-[#0A1931] min-h-screen text-white flex flex-col fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 lg:translate-x-0 ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
       <div className="p-6 border-b border-white/10">
         <h1 className="text-[#C5A253] font-black text-xl tracking-wide uppercase">
           SAFE Guard FORCE
@@ -68,6 +87,7 @@ export default function AdminSidebar() {
           <span>👁️</span> Preview Website
         </Link>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
